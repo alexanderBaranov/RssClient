@@ -31,6 +31,8 @@
     self.tableView.delegate = self;
 
     self.tableView.rowHeight = UITableViewAutomaticDimension;
+    
+    self.title = @"RSS list";
 }
 
 - (void)didReceiveMemoryWarning {

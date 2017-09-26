@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 #import <WebKit/WebKit.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 @protocol RSSHTMLControllerDelegate
 - (void)didFinishLoadingWebView;
 - (void)failLoadWithError:(NSInteger)errorCode;
@@ -19,3 +21,5 @@
 @property (weak, nonatomic) id<RSSHTMLControllerDelegate> delegate;
 
 @end
+
+NS_ASSUME_NONNULL_END

@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 @protocol RSSHotnewsLoaderDelegate
 - (void)willStartLoadHotnews;
 - (void)didCompleteLoadNews:(NSMutableArray *)hotnews;
@@ -19,3 +21,5 @@
 - (void)startLoadHotnews;
 
 @end
+
+NS_ASSUME_NONNULL_END
