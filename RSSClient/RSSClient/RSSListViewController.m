@@ -29,9 +29,13 @@
     
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
-
-    self.tableView.rowHeight = UITableViewAutomaticDimension;
+    self.tableView.layoutMargins = UIEdgeInsetsZero;
     
+//    if([self.tableView respondsToSelector:@selector(setCellLayoutMarginsFollowReadableWidth:)])
+//    {
+//        self.tableView.cellLayoutMarginsFollowReadableWidth = NO;
+//    }
+
     self.title = @"RSS list";
 }
 
@@ -61,8 +65,37 @@
 #pragma mark - UITableViewDataSource
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+self.tableView.layoutMargins = UIEdgeInsetsZero;
+    UITableViewCell *cell = [self tableView:tableView cellForRowAtIndexPath:indexPath];
     
-    return UITableViewAutomaticDimension;
+    CGFloat detailTextheight = [self heightForText:cell.detailTextLabel.text
+                                             width:self.tableView.frame.size.width
+                                           andFont:cell.detailTextLabel.font];
+    
+    CGFloat textLabelheight = [self heightForText:cell.textLabel.text
+                                            width:self.tableView.frame.size.width
+                                          andFont:cell.textLabel.font];
+    
+    CGFloat heightOffset = 50;
+    if(UIDeviceOrientationIsPortrait([UIDevice currentDevice].orientation))
+    {
+        heightOffset = 70;
+    }
+    
+    return detailTextheight + textLabelheight + heightOffset;
+}
+
+- (CGFloat)heightForText:(NSString *)text width:(CGFloat)width andFont:(UIFont *)font {
+    if(!text)
+    {
+        return 0;
+    }
+
+    CGRect frame = [text boundingRectWithSize:CGSizeMake(width, CGFLOAT_MAX)
+                                      options:NSStringDrawingUsesLineFragmentOrigin
+                                   attributes:@{NSFontAttributeName:font}
+                                      context:nil];
+    return frame.size.height + 10;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -80,13 +113,13 @@
     }
     
     RSSHotnews *hotnews = [_hotnews objectAtIndex:indexPath.row];
+
     cell.textLabel.text = hotnews.title;
     cell.textLabel.numberOfLines = 0;
     cell.detailTextLabel.text = hotnews.rssDescription;
     cell.detailTextLabel.numberOfLines = 0;
-    
+
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-    
     return cell;
 }
 
